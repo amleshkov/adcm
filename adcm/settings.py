@@ -135,6 +135,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'data/var/cluster.db'),
+        'OPTIONS': {
+            'timeout': 5,
+        },
         # 'ENGINE': 'django.db.backends.postgresql',
         # 'NAME': 'adcm',
         # 'HOST': 'localhost',
