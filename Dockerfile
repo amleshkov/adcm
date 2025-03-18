@@ -63,8 +63,8 @@ RUN apk add --no-cache --virtual .build-deps \
     /adcm/venv/2.9/bin/pip install --no-cache-dir git+https://github.com/arenadata/ansible.git@v2.9.27-p3 && \
     python -m venv /adcm/venv/2.17 --system-site-packages && \
     /adcm/venv/2.17/bin/pip install --no-cache-dir ansible-core==2.17.9 && \
-    /adcm/venv/2.17/bin ansible-galaxy install -r /adcm/ansible-10.7.0.yaml && \
-    /adcm/venv/2.17/bin ansible-galaxy install git+https://github.com/amleshkov/community.general.git,ADCM-6434 && \
+    /adcm/venv/2.17/bin/ansible-galaxy install -r /adcm/ansible-10.7.0.yaml && \
+    /adcm/venv/2.17/bin/ansible-galaxy install git+https://github.com/amleshkov/community.general.git,ADCM-6434 && \
     $POETRY_VENV/bin/poetry cache clear pypi --all && \
     apk del .build-deps && \
     apk cache clean --purge && \
