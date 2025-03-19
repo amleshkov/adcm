@@ -12,7 +12,7 @@ WORKDIR /code
 RUN . build.sh
 
 
-FROM python:3.10-alpine
+FROM python:3.10-alpine as python_builder
 ENV PATH="/root/.local/bin:$PATH"
 RUN apk update && \
     apk upgrade && \
@@ -25,13 +25,11 @@ RUN apk update && \
         libstdc++ \
         libxslt \
         musl-dev \
-        nginx \
         openldap-dev \
         openssh-client \
         openssh-keygen \
         openssl \
         rsync \
-        runit \
         sshpass && \
     apk cache clean --purge
 
@@ -59,15 +57,27 @@ RUN apk add --no-cache --virtual .build-deps \
     $POETRY_VENV/bin/pip install --no-cache-dir poetry==$POETRY_VERSION && \
     $POETRY_VENV/bin/poetry --no-cache --directory=/adcm install --no-root && \
     python -m venv /adcm/venv/2.9 --system-site-packages && \
-    /adcm/venv/2.9/bin/pip install --no-cache-dir git+https://github.com/arenadata/ansible.git@v2.9.27-p3 && \
-    $POETRY_VENV/bin/poetry cache clear pypi --all && \
-    apk del .build-deps && \
-    apk cache clean --purge && \
-    rm -rf $POETRY_HOME && \
-    rm -rf $POETRY_VENV && \
-    rm -rf $POETRY_CACHE_DIR
+    /adcm/venv/2.9/bin/pip install --no-cache-dir git+https://github.com/arenadata/ansible.git@v2.9.27-p3
 
-RUN rm /adcm/poetry.lock /adcm/pyproject.toml
+FROM python:3.10-alpine
+
+ENV PATH="/root/.local/bin:$PATH"
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache \
+        bash \
+        nginx \
+        openssh-client \
+        openssh-keygen \
+        openssl \
+        rsync \
+        runit \
+        sshpass && \
+    apk cache clean --purge
+
+RUN rm /usr/bin/python /usr/bin/python3 && \
+    ln -s /usr/local/bin/python3 /usr/bin/python3 && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
 
 COPY os/etc /etc
 COPY os/etc/crontabs/root /var/spool/cron/crontabs/root
@@ -75,7 +85,9 @@ COPY --from=go_builder /code/bin/runstatus /adcm/go/bin/runstatus
 COPY --from=ui_builder /wwwroot /adcm/wwwroot
 COPY conf /adcm/conf
 COPY python/ansible/plugins /usr/share/ansible/plugins
-COPY python /adcm/python
+COPY --from=python_builder /adcm/python /adcm/python
+COPY --from=python_builder /adcm/venv /adcm/venv
+COPY --from=python_builder /usr/local/bin /usr/local/bin
 
 RUN mkdir -p /adcm/data/log
 
