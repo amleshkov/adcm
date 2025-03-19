@@ -75,8 +75,7 @@ RUN apk update && \
         sshpass && \
     apk cache clean --purge
 
-RUN rm /usr/bin/python /usr/bin/python3 && \
-    ln -s /usr/local/bin/python3 /usr/bin/python3 && \
+RUN ln -s /usr/local/bin/python3 /usr/bin/python3 && \
     ln -s /usr/bin/python3 /usr/bin/python && \
 
 COPY os/etc /etc
@@ -88,6 +87,7 @@ COPY python/ansible/plugins /usr/share/ansible/plugins
 COPY --from=python_builder /adcm/python /adcm/python
 COPY --from=python_builder /adcm/venv /adcm/venv
 COPY --from=python_builder /usr/local/bin /usr/local/bin
+COPY --from=python_builder /usr/local/lib/python3.10 /usr/local/lib/python3.10
 
 RUN mkdir -p /adcm/data/log
 
