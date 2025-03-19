@@ -67,6 +67,7 @@ RUN apk update && \
     apk add --no-cache \
         bash \
         nginx \
+        openldap \
         openssh-client \
         openssh-keygen \
         openssl \
@@ -84,7 +85,7 @@ COPY --from=go_builder /code/bin/runstatus /adcm/go/bin/runstatus
 COPY --from=ui_builder /wwwroot /adcm/wwwroot
 COPY conf /adcm/conf
 COPY python/ansible/plugins /usr/share/ansible/plugins
-COPY --from=python_builder /adcm/python /adcm/python
+COPY python /adcm/python
 COPY --from=python_builder /adcm/venv /adcm/venv
 COPY --from=python_builder /usr/local/bin /usr/local/bin
 COPY --from=python_builder /usr/local/lib/python3.10 /usr/local/lib/python3.10
