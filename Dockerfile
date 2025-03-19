@@ -76,7 +76,7 @@ RUN apk update && \
     apk cache clean --purge
 
 RUN ln -s /usr/local/bin/python3 /usr/bin/python3 && \
-    ln -s /usr/bin/python3 /usr/bin/python && \
+    ln -s /usr/bin/python3 /usr/bin/python
 
 COPY os/etc /etc
 COPY os/etc/crontabs/root /var/spool/cron/crontabs/root
