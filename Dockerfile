@@ -92,6 +92,8 @@ COPY python /adcm/python
 COPY --from=python_builder /adcm/venv /adcm/venv
 COPY --from=python_builder /usr/local/bin /usr/local/bin
 COPY --from=python_builder /usr/local/lib/python3.10 /usr/local/lib/python3.10
+COPY --from=python_builder /root/.ansible/collections /root/.ansible/collections
+COPY --from=python_builder /root/.ansible/roles /root/.ansible/roles
 
 RUN mkdir -p /adcm/data/log
 
