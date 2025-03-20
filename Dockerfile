@@ -79,7 +79,8 @@ RUN apk update && \
         sshpass && \
     apk cache clean --purge
 
-RUN ln -s /usr/local/bin/python3 /usr/bin/python3 && \
+RUN rm /usr/bin/python /usr/bin/python3 && \
+    ln -s /usr/local/bin/python3 /usr/bin/python3 && \
     ln -s /usr/bin/python3 /usr/bin/python
 
 COPY os/etc /etc
