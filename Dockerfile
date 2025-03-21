@@ -64,6 +64,7 @@ RUN apk add --no-cache --virtual .build-deps \
     /adcm/venv/2.17/bin/ansible-galaxy install -r /adcm/ansible-10.7.0.yaml && \
     /adcm/venv/2.17/bin/ansible-galaxy install git+https://github.com/amleshkov/community.general.git,ADCM-6434
 
+FROM python:3.10-alpine
 ENV PATH="/root/.local/bin:$PATH"
 RUN apk update && \
     apk upgrade && \
@@ -79,8 +80,7 @@ RUN apk update && \
         sshpass && \
     apk cache clean --purge
 
-RUN rm /usr/bin/python /usr/bin/python3 && \
-    ln -s /usr/local/bin/python3 /usr/bin/python3 && \
+RUN ln -s /usr/local/bin/python3 /usr/bin/python3 && \
     ln -s /usr/bin/python3 /usr/bin/python
 
 COPY os/etc /etc
