@@ -59,10 +59,10 @@ RUN apk add --no-cache --virtual .build-deps \
     $POETRY_VENV/bin/poetry --no-cache --directory=/adcm install --no-root && \
     python -m venv /adcm/venv/2.9 --system-site-packages && \
     /adcm/venv/2.9/bin/pip install --no-cache-dir git+https://github.com/arenadata/ansible.git@v2.9.27-p3 && \
-    python -m venv /adcm/venv/2.17 --system-site-packages && \
-    /adcm/venv/2.17/bin/pip install --no-cache-dir ansible-core==2.17.9 && \
-    /adcm/venv/2.17/bin/ansible-galaxy install -r /adcm/ansible-10.7.0.yaml && \
-    /adcm/venv/2.17/bin/ansible-galaxy install git+https://github.com/amleshkov/community.general.git,ADCM-6434
+    python -m venv /adcm/venv/2.16 --system-site-packages && \
+    /adcm/venv/2.16/bin/pip install --no-cache-dir ansible-core==2.16.4 && \
+    /adcm/venv/2.16/bin/ansible-galaxy install -r /adcm/ansible-9.13.0.yaml && \
+    /adcm/venv/2.16/bin/ansible-galaxy install git+https://github.com/amleshkov/community.general.git,ADCM-6434_8.6.8
 
 FROM python:3.10-alpine
 ENV PATH="/root/.local/bin:$PATH"
