@@ -43,7 +43,7 @@ ENV POETRY_CACHE_DIR=/opt/poetry-cache
 ENV POETRY_VIRTUALENVS_CREATE=0
 
 COPY poetry.lock pyproject.toml /adcm/
-COPY ansible-10.7.0.yaml /adcm/
+COPY ansible-9.13.0.yaml /adcm/
 
 RUN apk add --no-cache --virtual .build-deps \
         build-base \
