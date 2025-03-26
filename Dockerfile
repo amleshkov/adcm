@@ -41,6 +41,8 @@ ENV POETRY_HOME=/opt/poetry
 ENV POETRY_VENV=/opt/poetry-venv
 ENV POETRY_CACHE_DIR=/opt/poetry-cache
 ENV POETRY_VIRTUALENVS_CREATE=0
+ENV COMMUNITY_GENERAL_BRANCH=ADCM-6434_8.6.8
+ENV COMMUNITY_GENERAL_VERSION=8.6.8
 
 COPY poetry.lock pyproject.toml /adcm/
 COPY ansible-9.13.0.yaml /adcm/
@@ -61,8 +63,10 @@ RUN apk add --no-cache --virtual .build-deps \
     /adcm/venv/2.9/bin/pip install --no-cache-dir git+https://github.com/arenadata/ansible.git@v2.9.27-p3 && \
     python -m venv /adcm/venv/2.16 --system-site-packages && \
     /adcm/venv/2.16/bin/pip install --no-cache-dir ansible-core==2.16.4 && \
-    /adcm/venv/2.16/bin/ansible-galaxy install -r /adcm/ansible-9.13.0.yaml && \
-    /adcm/venv/2.16/bin/ansible-galaxy install git+https://github.com/amleshkov/community.general.git,ADCM-6434_8.6.8
+    git clone https://github.com/amleshkov/community.general.git && \
+    cd community.general && git checkout  ADCM-6434_8.6.8 && /adcm/venv/2.16/bin/ansible-galaxy collection build && \
+    /adcm/venv/2.16/bin/ansible-galaxy collection install /community.general/community-general-8.6.8.tar.gz && \
+    /adcm/venv/2.16/bin/ansible-galaxy install -r /adcm/ansible-9.13.0.yaml
 
 FROM python:3.10-alpine
 ENV PATH="/root/.local/bin:$PATH"
