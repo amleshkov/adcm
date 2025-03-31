@@ -41,8 +41,6 @@ ENV POETRY_HOME=/opt/poetry
 ENV POETRY_VENV=/opt/poetry-venv
 ENV POETRY_CACHE_DIR=/opt/poetry-cache
 ENV POETRY_VIRTUALENVS_CREATE=0
-ENV COMMUNITY_GENERAL_BRANCH=ADCM-6434_8.6.8
-ENV COMMUNITY_GENERAL_VERSION=8.6.8
 
 COPY poetry.lock pyproject.toml /adcm/
 COPY ansible-9.13.0.yaml /adcm/
